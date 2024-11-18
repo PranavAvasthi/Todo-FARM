@@ -69,3 +69,31 @@ async def update_todo_helper(todo_id: str, new_completed: bool):
     if parent_todo and "children" in parent_todo:
         for child_id in parent_todo["children"]:
             await update_todo_helper(str(child_id), new_completed)
+            
+@router.delete("/todos/{todo_id}", response_model = TodoResponse)
+async def delete_todo(todo_id: str):
+    todo_to_delete = await db.todos.find_one({"_id": ObjectId(todo_id)})
+    
+    if not todo_to_delete:
+        raise HTTPException(status_code=404, detail="Todo not found")
+    
+    await delete_todo_helper(todo_id)
+    
+    return todo_to_delete
+
+async def delete_todo_helper(todo_id: str):
+    current_todo = await db.todos.find_one({"_id": ObjectId(todo_id)})
+    
+    if current_todo and "children" in current_todo:
+        for child_id in current_todo["children"]:
+            await delete_todo_helper(str(child_id))
+    
+    await db.todos.delete_one({"_id": ObjectId(todo_id)})
+    
+    parent_todo = await db.todos.find_one({"_id": ObjectId(todo_id)})
+    
+    if parent_todo and "parent_id" in parent_todo:
+        await db.todos.update_one(
+            {"_id": ObjectId(parent_todo["parent_id"])},
+            {"$pull": {"children": ObjectId(todo_id)}}
+        )
