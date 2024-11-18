@@ -5,7 +5,6 @@ from utils.database import db
 from typing import List
 
 router = APIRouter(
-    prefix="/api/v1",
     tags=['Todo Routes']
 )
 
