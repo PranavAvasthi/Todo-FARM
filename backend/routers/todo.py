@@ -4,7 +4,10 @@ from schemas.todo import TodoCreate, TodoUpdate, TodoResponse
 from utils.database import db
 from typing import List
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/api/v1",
+    tags=['Todo Routes']
+)
 
 @router.post("/todos", response_model = TodoResponse)
 async def create_todo(todo: TodoCreate):
