@@ -4,3 +4,4 @@ motor
 python-dotenv
 python-jose
 passlib
+pydantic[email]
