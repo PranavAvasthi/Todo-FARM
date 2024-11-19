@@ -33,6 +33,7 @@ class PyObjectId(ObjectId):
 class TodoBase(BaseModel):
     title: str
     completed: bool = False
+    # user_id: str
     
 class TodoCreate(TodoBase):
     parent_id: Optional[str] = None
@@ -43,6 +44,7 @@ class TodoUpdate(BaseModel):
     
 class TodoResponse(TodoBase):
     id: PyObjectId = Field(alias="_id")
+    user_id: str
     parent_id: Optional[PyObjectId]
     children: List[PyObjectId] = []
     

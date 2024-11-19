@@ -1,3 +1,5 @@
+from fastapi import Depends, HTTPException # type: ignore
+from fastapi.security import OAuth2PasswordBearer # type: ignore
 from datetime import datetime, timedelta
 from jose import jwt, JWTError # type: ignore
 from dotenv import load_dotenv # type: ignore
@@ -22,3 +24,15 @@ def decode_access_token(token: str):
         return jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
     except JWTError:
         return None
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid Token")
+        return user_id
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid Token")
