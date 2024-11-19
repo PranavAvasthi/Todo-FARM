@@ -12,7 +12,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100 w-full">
+      <div className="min-h-screen bg-gray-100 w-[100vw]">
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

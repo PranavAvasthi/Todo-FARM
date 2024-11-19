@@ -22,11 +22,11 @@ const TodoForm: React.FC<TodoFormProps> = ({ onSubmit }) => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a new todo..."
-        className="flex-1 p-2 border rounded"
+        className="flex-1 border rounded-2xl p-4 outline-none border-none shadow-xl"
       />
       <button
         type="submit"
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="px-8 py-2 border-none bg-blue-500 text-white hover:bg-gray-700 duration-500 transition-all rounded-3xl shadow-xl hover:translate-x-1"
       >
         Add
       </button>
