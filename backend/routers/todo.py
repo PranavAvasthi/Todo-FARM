@@ -92,10 +92,8 @@ async def delete_todo_helper(todo_id: str):
     
     await db.todos.delete_one({"_id": ObjectId(todo_id)})
     
-    parent_todo = await db.todos.find_one({"_id": ObjectId(todo_id)})
-    
-    if parent_todo and "parent_id" in parent_todo:
+    if current_todo and "parent_id" in current_todo:
         await db.todos.update_one(
-            {"_id": ObjectId(parent_todo["parent_id"])},
+            {"_id": ObjectId(current_todo["parent_id"])},
             {"$pull": {"children": ObjectId(todo_id)}}
         )
